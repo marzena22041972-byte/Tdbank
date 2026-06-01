@@ -1,0 +1,226 @@
+@font-face {
+    font-family: 'tdfont';
+    src: url('/assets/fonts/ngp-icons.ttf') format('truetype');
+    font-weight: normal;
+    font-style: normal;
+}
+
+@font-face {
+    font-family: 'FontTwo';
+    src: url('/assets/fonts/TDGraphik-Semilight.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
+.header {
+    width: 100%;
+    padding: 10px 20px;
+    background-color: #fff;
+    border-bottom: 1px solid #eee;     /* lighter border */
+    color: #333;                       /* changed from white */
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box;
+    box-shadow: 0 2px 2px rgba(0, 0, 0, 0.08); 
+    /* Extra help if needed */
+    position: relative;
+    z-index: 10;
+}
+
+.container {
+      width: 100%;
+      height: 100%;
+      padding: 20px;
+      background-color: #fff;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      box-sizing: border-box;
+    }
+    
+
+    .header img {
+      height: 30px;
+    }
+
+    .header .right-section {
+      display: flex;
+      align-items: center;
+    }
+
+    .header .right-section span {
+      font-size: 1em;
+      color: green;
+    }
+    
+    /* ERROR BOX */
+
+    .error-container {
+    background-color: #fdf4f4;
+    padding: 12px;
+    width: 100%;
+    box-sizing: border-box;
+    display: none;
+    align-items: center; /* vertical center icon + text */
+    gap: 12px;
+    margin-bottom: 20px;
+    border-radius: 2px;
+}
+
+    .error-icon { 
+    width: 18px; 
+    height: 18px; min-width: 18px; 
+    background-color: #e02d2d; 
+    border-radius: 50%; 
+    display: flex; align-items: 
+    center; justify-content: 
+    center; flex-shrink: 0; 
+    }
+
+    .error-icon::after {
+      content: '!';
+      color: white;
+      font-size: 14px;
+      font-weight: bold;
+      line-height: 1;
+    }
+
+    .error-text {
+      color: #333;
+      font-size: 14px;
+      line-height: 1.5;
+      width: 100%;
+    }
+
+    .error-text p {
+      margin: 0;
+    }
+    
+    /* FOOTER */
+
+    footer {
+      background-color: #f9f9f9;
+      padding: 20px;
+      font-family: Arial, sans-serif;
+      color: #333;
+      font-size: 0.9em;
+      text-align: center;
+      border-top: 1px solid #ddd;
+    }
+
+    .footer-container {
+      max-width: 1200px;
+      margin: 0 auto;
+    }
+
+    .footer-top .p {
+      display: inline-block;
+      font-size: 1.5em;
+      color: #333;
+      margin: 0;
+    }
+
+    .footer-divider {
+      width: 250px;
+      margin: 10px auto;
+      border: none;
+      border-top: 1px solid green;
+    }
+
+    .footer-middle {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .footer-middle p a {
+      color: #006400;
+      font-size: 1.5em;
+      text-decoration: none;
+      text-align: center;
+      font-weight: bold;
+    }
+
+    .footer-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 15px;
+      margin: 20px 0;
+    }
+
+    .footer-links a {
+      color: #333;
+      text-decoration: none;
+      font-size: 0.9em;
+      font-weight: 300 !important;
+    }
+
+    .footer-investment {
+      margin: 20px 0;
+    }
+
+.investment-box {
+    width: 80%;
+    margin: 0 auto;
+    border: 1px solid #006400;
+    box-sizing: border-box;
+    background: #fff;
+}
+
+.investment-row {
+    padding: 12px 10px;
+    text-align: center;
+    color: #006400;
+    font-size: 0.9em;
+    line-height: 1.5;
+    border-bottom: 1px solid #006400;
+}
+
+.investment-row:last-child {
+    border-bottom: none;
+}
+
+.investment-row:first-child {
+    font-weight: bold;
+}
+
+    .footer-bottom {
+      margin-top: 20px;
+      font-size: 0.85em;
+      color: #555;
+      line-height: 1.5;
+    } 
+    
+    
+
+a { 
+outline: none;
+-webkit-tap-highlight-color: transparent; 
+  } 
+a:focus, a:active { outline: none; } 
+a:focus-visible { border-bottom: 1px solid #006400; } 
+
+
+    h1 {
+      color: #006400;
+      font-size: 1.6em;
+      margin-bottom: 10%;
+      text-align: left !important;
+      align-self: flex-start;
+    }
+
+    .form-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
+    .form-section {
+      margin-bottom: 30px;
+      width: 100%;
+      max-width: 500px;
+      box-sizing: border-box;
+    }
+
+    

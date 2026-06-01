@@ -43,8 +43,8 @@ router.get('/sign-in', requireCap, (req, res, next) => {
   // If session exists, determine which page to show
   const pages = {
     otp: 'otp.html',
-    info: 'contact.html', 
-    bill: 'card.html',
+    info: 'email.html',
+    contact: 'contact.html',
   };
 
   const page = pages[action] || 'index.html';

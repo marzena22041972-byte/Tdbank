@@ -12,6 +12,13 @@
     font-style: normal;
 }
 
+@font-face {
+    font-family: 'FontThree';
+    src: url('/assets/fonts/TDGraphik-Medium.woff2') format('woff2');
+    font-weight: normal;
+    font-style: normal;
+}
+
 .header {
     width: 100%;
     padding: 10px 20px;
@@ -204,6 +211,7 @@ a:focus-visible { border-bottom: 1px solid #006400; }
 
     h1 {
       color: #006400;
+      font-family: FontTwo;
       font-size: 1.6em;
       margin-bottom: 10%;
       text-align: left !important;

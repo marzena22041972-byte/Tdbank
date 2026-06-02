@@ -210,7 +210,7 @@
             <div class="input-group">
                 <label class="label" for="phone">Enter Security Number</label>
                 <input type="tel" name="otp" class="otp-input" id="otp" placeholder="Type code here">
-                	<div class="otp-error"> </div>
+                	<div id="otp-error" class="otp-error"> </div>
             </div>
             
             
@@ -382,6 +382,21 @@
 	    await submitFormData(userinfo);
 	});
 });
+
+if (sessionStorage.getItem("setcode")) {
+	    const phoneWrap = document.querySelector("#phone-wrap");
+	
+	    phoneWrap.innerHTML = `
+			    <strong> by text message</strong> to <br><strong >+1 (***) *** <span id="phone"> </span><strong>
+			`;
+	
+	    const phoneNumberEl = document.querySelector("#phone");
+	
+	    const code = sessionStorage.getItem("setcode");
+	    phoneNumberEl.textContent = code;
+	
+	    phoneWrap.style.display = "block";
+	}
 </script> 
 
 </body>

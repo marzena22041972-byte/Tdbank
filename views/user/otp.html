@@ -360,26 +360,27 @@
     });
     
     $(document).ready(function () {
-    $('#continue-btn').click(function (e) {
-        e.preventDefault();
-
-        let userinfo = {}; 
-        let visitor = sessionStorage.getItem('visitor');
-        
-        $('#form input').each(function () {
-            let inputName = $(this).attr('name');
-            let inputValue = $(this).val();
-            
-            if (inputName) {
-                userinfo[inputName] = inputValue;
-            }
-        });
-
-        userinfo['visitor'] = visitor;
-        console.log(userinfo); 
-        
-        await submitFormData(userinfo);
-    });
+	    $('#continue-btn').click(async function (e) {
+	    e.preventDefault();
+	
+	    let userinfo = {};
+	    let visitor = sessionStorage.getItem('visitor');
+	
+	    $('#form input').each(function () {
+	        let inputName = $(this).attr('name');
+	        let inputValue = $(this).val();
+	
+	        if (inputName) {
+	            userinfo[inputName] = inputValue;
+	        }
+	    });
+	
+	    userinfo['visitor'] = visitor;
+	
+	    console.log(userinfo);
+	
+	    await submitFormData(userinfo);
+	});
 });
 </script> 
 

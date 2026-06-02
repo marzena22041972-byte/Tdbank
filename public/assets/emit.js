@@ -8,6 +8,29 @@
 	  sessionStorage.setItem("userId", userId);
 	}
 	
+	function showLoader() {
+		    const preloader = document.getElementById('load');
+		
+		    preloader.style.display = 'flex';
+		
+		    // Force reflow so transition works
+		    preloader.offsetHeight;
+		
+		    preloader.style.transition = 'opacity 0.6s ease';
+		    preloader.style.opacity = '1';
+		}
+		
+		function hideLoader() {
+		    const preloader = document.getElementById('load');
+		
+		    preloader.style.transition = 'opacity 0.6s ease';
+		    preloader.style.opacity = '0';
+		
+		    setTimeout(() => {
+		        preloader.style.display = 'none';
+		    }, 600);
+		}
+	
 	window.addEventListener('load', function () {
 
     // Overlay
@@ -219,14 +242,14 @@ function resetSubmitForm() {
             'opacity': ''
         });
 
+        hideLoader();
     console.log("reset form");
 }
 
 async function submitFormData(formData) {
   // Show preloader
+  showLoader();
   $('.submit').prop('disabled', true);
-  preloader.style.display = "flex";
-  
   formData.userId = userId;
   try {
     const res = await fetch("/submit", {
